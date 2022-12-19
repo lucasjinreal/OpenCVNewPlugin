@@ -1,11 +1,12 @@
 ﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
+using System.IO;
 
 public class OpenCVNewPlugin : ModuleRules
 {
 
-	private string ThirdPartyPath => Path.GetFullPath(Path.Combine(ModuleDirectory, "../../ThirdParty"));
+	private string ThirdPartyPath => Path.GetFullPath(Path.Combine(ModuleDirectory, "../ThirdParty"));
 
 	public OpenCVNewPlugin(ReadOnlyTargetRules Target) : base(Target)
 	{
@@ -29,7 +30,6 @@ public class OpenCVNewPlugin : ModuleRules
 			new string[]
 			{
 				"Core",
-				"OpenCVNewPluginLibrary",
 				"Projects"
 				// ... add other public dependencies that you statically link with here ...
 			}
@@ -65,5 +65,10 @@ public class OpenCVNewPlugin : ModuleRules
 		PublicAdditionalLibraries.Add(Path.Combine(opencvLibPath, "opencv4/3rdparty/libittnotify.a"));
 		PublicAdditionalLibraries.Add(Path.Combine(opencvLibPath, "opencv4/3rdparty/libade.a"));
 		
+		// frameworks for Mac
+		if (Target.Platform == UnrealTargetPlatform.Mac)
+		{
+			PublicAdditionalFrameworks.Add(new Framework("OpenCL", "/System/Library/Frameworks/OpenCL.framework", ""));
+		}
 	}
 }
